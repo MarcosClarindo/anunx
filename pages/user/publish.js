@@ -1,9 +1,21 @@
-import { Box, Button, Container, Select, TextField, Typography } from '@material-ui/core'
+import { Box,
+        Button, 
+        Container, 
+        IconButton, 
+        Select, 
+        TextField, 
+        Typography } from '@material-ui/core'
+
+import { useDropzone } from 'react-dropzone'    
 import { makeStyles } from '@material-ui/core/styles'
+import { DeleteForever } from '@material-ui/icons'
 
 import TemplateDefault from '../../src/templates/Default'
+import { useState } from 'react'
 
 const useStyles = makeStyles((theme) =>({
+    mask: {},
+    mainImage:{},
     container: {
         padding: theme.spacing(8, 0, 3)
     },
@@ -14,10 +26,75 @@ const useStyles = makeStyles((theme) =>({
         backgroundColor: theme.palette.background.white,
         padding: theme.spacing(3),
     },
+    thumbsContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        marginTop: 15,
+    },
+    dropZone: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        padding: 10,
+        width: 200,
+        height: 150,
+        margin: '0 15px 15px 0',
+        backgroundColor: theme.palette.background.default,
+        border: '2px dashed black'  // bordar com traços
+    },
+    thumb: {
+        position: 'relative',
+        width: 200,
+        height: 150,
+        backgroundSize: 'cover',
+        margin: '0 15px 15px 0',
+        backgroundPosition: 'center center',
+
+        '& $mainImage': {
+            backgroundColor: 'blue',
+            padding: '6px 10px',
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+        },
+
+        '&:hover $mask': {
+            display: 'flex',
+        },
+        // para passando o filho
+        '& $mask' : {
+            display: 'none',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0 , 0, 0.1)',
+            width: '100%',
+            height: '100%',
+        }
+    }
 }))
 const Publish = () => {
     const classes = useStyles()
 
+    // armazenando as imagens em um estado para um preview
+    const [files, setFiles] = useState([])
+    const { getRootProps, getInputProps } = useDropzone({
+        accept: 'image/*',
+        onDrop: (acceptedFile) =>{
+            // percorrendo o Array e criando um novo objeto
+            const newFiles = acceptedFile.map(file => {
+                return Object.assign(file, {
+                    preview: URL.createObjectURL(file)
+                })
+            })
+
+            // manter as imagens na lista quando chamar outras imagens 
+            setFiles([
+                ...files,
+                ...newFiles,
+            ])
+        }
+    })
     return(
         <TemplateDefault>
             <Container maxWidth='sm' className={classes.container}>
@@ -82,6 +159,43 @@ const Publish = () => {
                     <Typography component='div' variant='body2' color='textPrimary'>
                         Primeira imagem é a foto principal do seu anúncio.
                     </Typography>
+                    <Box className={classes.thumbsContainer}>
+                        <Box className={classes.dropZone} {...getRootProps()}>
+                            <input {...getInputProps()}/>
+                            <Typography variant='body2' color='textPrimary'>
+                                Clique para adicionar ou arraste a imagem para aqui.
+                            </Typography>
+                        </Box>
+                         
+                        
+                        {
+                            // Exibir o map
+                            files.map((file, index) => (
+
+                                <Box
+                                    key={file.name}
+                                    className={classes.thumb}
+                                    style={{backgroundImage: `url(${file.preview})`}}
+                                >
+                                    {
+                                        index == 0 ?
+                                            <Box className={classes.mainImage}>
+                                                <Typography variant='body2' color='secondary'>
+                                                    Principal
+                                                </Typography>
+                                            </Box>
+                                        : null    
+                                    }
+                                    <Box className= {classes.mask}>
+                                        <IconButton color='secondary'>
+                                            <DeleteForever fontSize='large'/>
+                                        </IconButton>
+                                    </Box>
+                                </Box>
+
+                            ))
+                        }
+                    </Box>
                 </Box>
             </Container>
 
