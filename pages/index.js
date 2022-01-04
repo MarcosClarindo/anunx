@@ -1,9 +1,7 @@
 import { Paper, 
         Card,
         CardMedia,
-        CardActions,
         CardContent,
-        Button,
         Container, 
         IconButton, 
         InputBase, 
@@ -15,10 +13,6 @@ import SearchIcon from '@material-ui/icons/search'
 import TemplateDefault from '../src/templates/Default'
 
 const useStyle = makeStyles((theme) =>({
-
-    searchContainer: {
-        padding: theme.spacing(8, 10, 6)
-    },
     cardMedia: {
         paddingTop: '56%',
     },
@@ -36,7 +30,7 @@ const Home = () =>{
     const classes = useStyle()
     return(
         <TemplateDefault>
-            <Container maxWidth='md' className={classes.searchContainer}>
+            <Container maxWidth='md'>
                 <Typography component='h1' variant='h3' align='center' color='textPrimary'>
                     O que deseja encontrar?
                 </Typography>

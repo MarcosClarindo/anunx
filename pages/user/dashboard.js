@@ -11,9 +11,6 @@ import TempletDefault from '../../src/templates/Default'
 
 
 const useStyles = makeStyles((theme) => ({
-    container: {
-        padding: theme.spacing(8, 0, 6)
-    },
     cardMedia: {
         paddingTop: '56%', 
     },
@@ -28,7 +25,7 @@ export default function Home(){
 
     return (
         <TempletDefault>
-            <Container maxWidth='sm'className={classes.container}>
+            <Container maxWidth='sm'>
                 <Typography component='h1' variant='h2' align='center'>
                     Meus Anúncios
                 </Typography>
