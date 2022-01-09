@@ -7,7 +7,7 @@ import { Container,
          CardHeader, 
          Avatar, 
          CardMedia } from '@material-ui/core'
-
+import Carousel from 'react-material-ui-carousel'
 import TemplateDefault from '../src/templates/Default'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -24,6 +24,12 @@ const useStyles = makeStyles((theme) =>({
     price: {
         fontWeight: 'bold',
         marginBottom: '15px',
+    },
+    card: {
+        height:'100%',
+    },
+    carMedia: {
+        paddingTop: '56%',
     }
 }))
 const Product = () => {
@@ -34,7 +40,30 @@ const Product = () => {
                 <Grid container spacing={3}>
                     <Grid item xs={8}>
                         <Box className={classes.box}>
-                            Carrosel
+                            <Carousel
+                                autoPlay={false}
+                                animation='slide'
+                                navButtonsProps={{          // Change the colors and radius of the actual buttons. THIS STYLES BOTH BUTTONS
+                                    style: {
+                                        color:'white'
+                                    }
+                                }}
+                            >
+                                <Card className={classes.card}>
+                                    <CardMedia
+                                        className={classes.carMedia}
+                                        image='https://source.unsplash.com/random?a=1' // para carregar imagens diferentes
+                                        title='Titulo da imagem'
+                                    />
+                                </Card>
+                                <Card className={classes.card}>
+                                    <CardMedia
+                                        className={classes.carMedia}
+                                        image='https://source.unsplash.com/random?a=2' // para carregar imagens diferentes
+                                        title='Titulo da imagem'
+                                    />
+                                </Card>
+                            </Carousel>
                         </Box>
                         <Box className={classes.box} textAlign='left'>
                             <Typography component='span' variant='caption'>Publica 16 junho de 2021</Typography>
