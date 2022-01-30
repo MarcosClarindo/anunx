@@ -126,8 +126,8 @@ const Signup = () => {
                                                 <Button
                                                     type='submit'
                                                     fullWidth='contained'
-                                                    color='primary'
                                                     className={classes.submit} 
+                                                    color='primary'
                                                 >
                                                     Cadastrar
                                                 </Button>
