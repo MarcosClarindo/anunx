@@ -1,14 +1,14 @@
 import axios from "axios";
 import NextAuth from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials";
+import Providers from 'next-auth/providers';
 
 export default NextAuth({
   
   providers: [
-    CredentialsProvider({
+    Providers.Credentials({
         name: "Credentials",
         async authorize(credentials) {
-            const res = axios.post('http://localhost:3000/api/auth/signin', credentials)
+            const res = await axios.post('http://localhost:3000/api/auth/signin', credentials)
             
             const user = res.data
 

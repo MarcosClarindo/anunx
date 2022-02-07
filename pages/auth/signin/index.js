@@ -1,7 +1,7 @@
 import { Formik } from 'formik'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/client'
 
 import { Container,
          Typography,
@@ -25,7 +25,7 @@ const Signin = () => {
     const classes = useStyles()
     const router = useRouter()
     const { setToasty } = useToasty()
-    const { session } = useSession()
+    const [ session ] = useSession()
 
     console.log(session)
 
