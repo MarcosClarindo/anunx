@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { Formik } from 'formik'
 import axios from 'axios'
 import { useRouter } from 'next/router'
@@ -24,11 +25,16 @@ import { Alert } from '@mui/material'
 const Signin = () => {
     const classes = useStyles()
     const router = useRouter()
-    const { setToasty } = useToasty()
+    //const { setToasty } = useToasty()
     const [ session ] = useSession()
 
     console.log(session)
 
+    const handleGoogleLogin = () => {
+        signIn('google', {
+            callbackUrl: 'http://localhost:3000/user/dashboard'
+        })
+    }
     // values = fomulário
     const handleFormSubmit = async values => {
         signIn('credentials', {
@@ -48,7 +54,28 @@ const Signin = () => {
 
             <Container maxWidth='md'>
                 <Box className={ classes.box}>
-                    
+
+                    <Box display='flex' justifyContent='center'>
+                        <Button
+                            variant='contained'
+                            color='primary'
+                            startIcon={
+                                <Image
+                                    src="/images/logo_google.svg" 
+                                    width={20}
+                                    height={20}
+                                    alt="Login com Google"
+                                />
+                            }
+                            onClick={handleGoogleLogin}
+                            >
+                                Entrar com o Google
+                            </Button>
+                    </Box>
+                    <Box className={classes.orSeparator}>
+                        <span>ou</span>
+                    </Box>
+                                        
                     <Formik
                         initialValues={ initialValues }
                         validationSchema={validationSchema}
