@@ -22,7 +22,7 @@ import useStyles from './styles'
 import { Alert } from '@mui/material'
 
 
-const Signin = () => {
+const Signin = ({ APP_URL }) => {
     const classes = useStyles()
     const router = useRouter()
     //const { setToasty } = useToasty()
@@ -32,7 +32,7 @@ const Signin = () => {
 
     const handleGoogleLogin = () => {
         signIn('google', {
-            callbackUrl: 'http://localhost:3000/user/dashboard'
+            callbackUrl: `${process.env.APP_URL}/user/dashboard`
         })
     }
     // values = fomulário
@@ -157,4 +157,9 @@ const Signin = () => {
     )
 }
 
+Signin.getInitialProps = async function() {
+    return {
+        APP_URL: process.env.APP_URL
+    }
+}
 export default Signin
