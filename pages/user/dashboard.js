@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'block' //para obedecer o margin auto
     }
 }))
-export default function Home(){
+const Home = () =>{
     const classes = useStyles()
 
 
@@ -102,3 +102,6 @@ export default function Home(){
         </TempletDefault>
     )
 }
+
+Home.requireAuth = true
+export default Home
