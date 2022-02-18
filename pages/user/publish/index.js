@@ -20,9 +20,50 @@ import { initialValues, validationSchema } from './formValues'
 
 import useStyles from './styles'
 import FileUpLoad from '../../../src/components/FileUpload'
+import useToasty from '../../../src/contexts/Toasty'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 
 const Publish = () => {
     const classes = useStyles()
+    const { setToasty } = useToasty()
+    const router = useRouter()
+
+    const handleSuccess = () => {
+        setToasty({
+            open: true,
+            text: 'Anúncio Cadastrado com sucesso',
+            severity: 'success',
+        })
+
+        //router.push('/user/dashboard')
+    }
+
+    const handleError = () => {
+        setToasty({
+            open: true,
+            text: 'Ops, ocorreu um erro, tente novamente.',
+            severity: 'success',
+        })
+    }
+
+    const handleFormSubmit = (values) => {
+        const formData = new FormData()
+        // laço para percorrer todos os campos do formulário
+        for( let field in values ){
+            if (field === 'files'){
+                values.files.forEach(file => {
+                    formData.append('files', file)
+                })
+            }else {
+                formData.append(field, values[field])
+            }
+        }
+
+        axios.post('/api/products', formData)
+            .then(handleSuccess)
+            .catch(handleError)
+    }
 
     // armazenando as imagens em um estado para um preview
     return(
@@ -31,9 +72,7 @@ const Publish = () => {
                 // sempre definir de acordo com os dados que será recebido.
                 initialValues={initialValues}
                 validationSchema={validationSchema} // necessário ser uma função  
-                onSubmit={(values) =>{
-                    console.log('ok enviou o form', values)
-                }}
+                onSubmit={ handleFormSubmit }
             >
                 {
                     ({
