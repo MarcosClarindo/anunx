@@ -11,6 +11,7 @@ import { Box,
         FormHelperText,
         Typography, 
         Input,
+        CircularProgress,
         } from '@material-ui/core'
    
 
@@ -24,10 +25,18 @@ import useToasty from '../../../src/contexts/Toasty'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 
-const Publish = () => {
+
+const Publish = ({ userId, image }) => {
     const classes = useStyles()
     const { setToasty } = useToasty()
     const router = useRouter()
+
+    const formValues = {
+        ...initialValues,
+    }
+
+    formValues.userId = userId
+    formValues.image = image
 
     const handleSuccess = () => {
         setToasty({
@@ -70,7 +79,7 @@ const Publish = () => {
         <TemplateDefault>
             <Formik
                 // sempre definir de acordo com os dados que será recebido.
-                initialValues={initialValues}
+                initialValues={formValues}
                 validationSchema={validationSchema} // necessário ser uma função  
                 onSubmit={ handleFormSubmit }
             >
@@ -82,11 +91,15 @@ const Publish = () => {
                         handleChange,
                         handleSubmit,
                         setFieldValue,
+                        isSubmitting,
                     }) => {
 
                    
                         return (
                             <form onSubmit={handleSubmit}>
+
+                                <Input type='hidden' name='userId' value={values.userId}/>
+                                <Input type='hidden' name='image' value={values.image} />
                                 <Container maxWidth='sm'>
                                         <Typography component='h1' variant='h2' align='center' color='textPrimary'>
                                             Publicar Anúncio
@@ -251,9 +264,12 @@ const Publish = () => {
                     
                                 <Container maxWidth='md'className={classes.boxContainer}>
                                     <Box textAlign="right">
-                                        <Button type='submit' variant='contained' color='primary'>
-                                            Publicar Anúncio
-                                        </Button>
+                                        {
+                                            isSubmiting
+                                            ? <CircularProgress className={classes.loading} />
+                                            : <Button type='submit' variant='contained' color='primary'> Publicar anúncio </Button>
+                                        }
+                                       
                                     </Box>
                                 </Container>
                             </form>
@@ -268,5 +284,16 @@ const Publish = () => {
 }
 
 Publish.requireAuth = true
+
+export async function getServerSideProps( { req }) {
+    const { userId, user } = await getSession({ req })
+
+    return {
+        props: {
+            userId,
+            image: user.image,
+        }
+    }
+}
 
 export default Publish
