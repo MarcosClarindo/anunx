@@ -5,6 +5,7 @@ import { Box,
 
 import { DeleteForever } from '@material-ui/icons'
 import { useDropzone } from 'react-dropzone' 
+import { object } from 'yup'
 
 import useStyles from './styles'
 
@@ -13,14 +14,11 @@ const FileUpLoad = ({ files, errors, touched, setFieldValue }) => {
 
     const { getRootProps, getInputProps } = useDropzone({
         accept: 'image/*',
-        onDrop: (acceptedFile) =>{
+        onDrop: (acceptedFile) => {
             // percorrendo o Array e criando um novo objeto
-            const newFiles = acceptedFile.map(file => {
-                return {
-                    ...file,
-                    preview: URL.createObjectURL(file)
-                }
-            })
+            const newFiles = acceptedFile.map(file => Object.assign(file, {
+               preview: URL.createObjectURL(file)
+            }))
 
             // manter as imagens na lista quando chamar outras imagens 
             setFieldValue('files',[

@@ -36,7 +36,7 @@ const Publish = () => {
             severity: 'success',
         })
 
-        //router.push('/user/dashboard')
+        router.push('/user/dashboard')
     }
 
     const handleError = () => {
