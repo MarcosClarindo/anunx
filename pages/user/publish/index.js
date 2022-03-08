@@ -24,6 +24,7 @@ import FileUpLoad from '../../../src/components/FileUpload'
 import useToasty from '../../../src/contexts/Toasty'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { getSession } from 'next-auth/client'
 
 
 const Publish = ({ userId, image }) => {
@@ -33,6 +34,7 @@ const Publish = ({ userId, image }) => {
 
     const formValues = {
         ...initialValues,
+       
     }
 
     formValues.userId = userId
@@ -52,7 +54,7 @@ const Publish = ({ userId, image }) => {
         setToasty({
             open: true,
             text: 'Ops, ocorreu um erro, tente novamente.',
-            severity: 'success',
+            
         })
     }
 
@@ -91,7 +93,7 @@ const Publish = ({ userId, image }) => {
                         handleChange,
                         handleSubmit,
                         setFieldValue,
-                        isSubmitting,
+                        isSubmiting,
                     }) => {
 
                    
@@ -288,6 +290,7 @@ Publish.requireAuth = true
 export async function getServerSideProps( { req }) {
     const { userId, user } = await getSession({ req })
 
+    console.log(getSession)
     return {
         props: {
             userId,

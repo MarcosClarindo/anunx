@@ -21,6 +21,7 @@ const post = async(req, res) => {
 
         const { files } = data
 
+
         const filesToRename = files instanceof Array
         ? files
         : [files]
@@ -34,11 +35,10 @@ const post = async(req, res) => {
             // pegando qualquer tipo de arquivo
             const extension = path.extname(file.name)
 
-            
             const filename = `${timestamp}_${random}${extension}`
 
-            const oldpath = path.join(__dirname, '../../../../' + file.path)
-            const newpath = path.join(__dirname, '../../../../' + form.uploadDir + '/' + filename)
+            const oldpath = path.join(__dirname, `../../../../${file.path}`)
+            const newpath = path.join(__dirname, `../../../../${form.uploadDir}/${filename}`)
 
             //salvando imagens no banco de dados
             filesToSave.push({
@@ -54,7 +54,6 @@ const post = async(req, res) => {
                 }
             })
         })
-
         // dados vindo do formulario
         const {
             title,
@@ -92,7 +91,6 @@ const post = async(req, res) => {
         }else{
             res.status(500).json({ success: false })
         }
-        
     })
 }
 
